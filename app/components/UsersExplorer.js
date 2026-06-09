@@ -13,7 +13,6 @@ export default function UsersExplorer() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
     getUsers()
       .then((data) => {
         setUsers(data);
@@ -30,9 +29,11 @@ export default function UsersExplorer() {
   }
 
   function handleToggleFavorite(userId) {
-    const user = users.find((item) => item.id === userId);
-    user.favorite = !user.favorite;
-    setUsers(users);
+    setUsers((currentUsers) =>
+      currentUsers.map((user) =>
+        user.id === userId ? { ...user, favorite: !user.favorite } : user
+      )
+    );
   }
 
   if (loading) {
